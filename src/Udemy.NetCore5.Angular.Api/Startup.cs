@@ -46,6 +46,8 @@ namespace Udemy.NetCore5.Angular.Api
 
             app.UseRouting();
 
+            app.UseCors(p => p.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200"));
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
