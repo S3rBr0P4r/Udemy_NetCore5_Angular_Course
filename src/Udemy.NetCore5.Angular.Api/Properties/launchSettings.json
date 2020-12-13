@@ -2,9 +2,6 @@
   "profiles": {
     "Udemy.NetCore5.Angular.Api": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

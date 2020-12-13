@@ -39,7 +39,10 @@ namespace Udemy.NetCore5.Angular.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Udemy.NetCore5.Angular.Api v1"));
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Udemy.NetCore5.Angular.Api v1");
+                });
             }
 
             app.UseHttpsRedirection();
