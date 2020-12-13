@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.NetCore5.Angular.Api", "src\Udemy.NetCore5.Angular.Api\Udemy.NetCore5.Angular.Api.csproj", "{F326C771-3EFB-4B8B-B787-3D6ED378C1BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Udemy.NetCore5.Angular.Api", "src\Udemy.NetCore5.Angular.Api\Udemy.NetCore5.Angular.Api.csproj", "{F326C771-3EFB-4B8B-B787-3D6ED378C1BA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1FE369E1-96B4-4544-8C55-0D64C2CDF242}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.NetCore5.Angular.Data", "src\Udemy.NetCore5.Angular.Data\Udemy.NetCore5.Angular.Data.csproj", "{113CD14D-4436-4871-8EEA-AD7D7830C1F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +19,17 @@ Global
 		{F326C771-3EFB-4B8B-B787-3D6ED378C1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F326C771-3EFB-4B8B-B787-3D6ED378C1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F326C771-3EFB-4B8B-B787-3D6ED378C1BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{113CD14D-4436-4871-8EEA-AD7D7830C1F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{113CD14D-4436-4871-8EEA-AD7D7830C1F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{113CD14D-4436-4871-8EEA-AD7D7830C1F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{113CD14D-4436-4871-8EEA-AD7D7830C1F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F326C771-3EFB-4B8B-B787-3D6ED378C1BA} = {1FE369E1-96B4-4544-8C55-0D64C2CDF242}
+		{113CD14D-4436-4871-8EEA-AD7D7830C1F5} = {1FE369E1-96B4-4544-8C55-0D64C2CDF242}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {268B6F56-3CD1-4887-B6DB-8FD24DA403E7}
