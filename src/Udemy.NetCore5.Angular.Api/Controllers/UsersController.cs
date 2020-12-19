@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Udemy.NetCore5.Angular.Data;
@@ -24,6 +25,7 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<AppUser> GetUser(int id)
         {
             return await _context.Users.FindAsync(id);

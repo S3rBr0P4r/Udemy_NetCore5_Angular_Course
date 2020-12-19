@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Udemy.NetCore5.Angular.Api.DTOs;
 using Udemy.NetCore5.Angular.Data;
 using Udemy.NetCore5.Angular.Data.Entities;
+using Udemy.NetCore5.Angular.Logic.Interfaces;
 
 namespace Udemy.NetCore5.Angular.Api.Controllers
 {
@@ -16,14 +17,16 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
     public class AccountController : ControllerBase
     {
         private readonly DataContext _context;
+        private readonly ITokenService _tokenService;
 
-        public AccountController(DataContext context)
+        public AccountController(DataContext context, ITokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register([FromBody] RegisterUserRequest request)
+        public async Task<ActionResult<UserTokenResponse>> Register([FromBody] RegisterUserRequest request)
         {
             if (await UserExists(request.UserName).ConfigureAwait(false))
             {
@@ -41,11 +44,15 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             await _context.Users.AddAsync(user).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
-            return user;
+            return new UserTokenResponse
+            {
+                UserName = user.UserName,
+                Token = _tokenService.CreateToken(user)
+            };
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<AppUser>> Login([FromBody] LoginUserRequest request)
+        public async Task<ActionResult<UserTokenResponse>> Login([FromBody] LoginUserRequest request)
         {
             var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == request.UserName.ToLowerInvariant()).ConfigureAwait(false);
 
@@ -63,7 +70,11 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
                 return Unauthorized("Invalid password");
             }
 
-            return user;
+            return new UserTokenResponse
+            {
+                UserName = user.UserName,
+                Token = _tokenService.CreateToken(user)
+            };
         }
 
         private async Task<bool> UserExists(string userName)
