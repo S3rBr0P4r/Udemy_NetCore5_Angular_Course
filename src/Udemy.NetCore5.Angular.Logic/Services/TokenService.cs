@@ -22,6 +22,11 @@ namespace Udemy.NetCore5.Angular.Logic.Services
 
         public string CreateToken(AppUser user)
         {
+            if (user == null)
+            {
+                return null;
+            }
+
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.NameId, user.UserName)

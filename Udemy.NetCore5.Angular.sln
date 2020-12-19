@@ -11,6 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Udemy.NetCore5.Angular.Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.NetCore5.Angular.Logic", "src\Udemy.NetCore5.Angular.Logic\Udemy.NetCore5.Angular.Logic.csproj", "{FB3664A2-F1AA-46AE-9B96-8C7ECBBD7756}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D18F8666-85D3-4F80-AB8B-A34E73C23FB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.NetCore5.Angular.Api.Tests", "tests\Udemy.NetCore5.Angular.Api.Tests\Udemy.NetCore5.Angular.Api.Tests.csproj", "{05C9BB14-B089-445D-BF1B-C12FCDB93119}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Udemy.NetCore5.Angular.Logic.Tests", "tests\Udemy.NetCore5.Angular.Logic.Tests\Udemy.NetCore5.Angular.Logic.Tests.csproj", "{C2F3E21C-C691-47BD-BC89-C1B847E88DDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +35,14 @@ Global
 		{FB3664A2-F1AA-46AE-9B96-8C7ECBBD7756}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB3664A2-F1AA-46AE-9B96-8C7ECBBD7756}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB3664A2-F1AA-46AE-9B96-8C7ECBBD7756}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05C9BB14-B089-445D-BF1B-C12FCDB93119}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C9BB14-B089-445D-BF1B-C12FCDB93119}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05C9BB14-B089-445D-BF1B-C12FCDB93119}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C9BB14-B089-445D-BF1B-C12FCDB93119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2F3E21C-C691-47BD-BC89-C1B847E88DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2F3E21C-C691-47BD-BC89-C1B847E88DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2F3E21C-C691-47BD-BC89-C1B847E88DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2F3E21C-C691-47BD-BC89-C1B847E88DDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +51,8 @@ Global
 		{F326C771-3EFB-4B8B-B787-3D6ED378C1BA} = {1FE369E1-96B4-4544-8C55-0D64C2CDF242}
 		{113CD14D-4436-4871-8EEA-AD7D7830C1F5} = {1FE369E1-96B4-4544-8C55-0D64C2CDF242}
 		{FB3664A2-F1AA-46AE-9B96-8C7ECBBD7756} = {1FE369E1-96B4-4544-8C55-0D64C2CDF242}
+		{05C9BB14-B089-445D-BF1B-C12FCDB93119} = {D18F8666-85D3-4F80-AB8B-A34E73C23FB0}
+		{C2F3E21C-C691-47BD-BC89-C1B847E88DDE} = {D18F8666-85D3-4F80-AB8B-A34E73C23FB0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {268B6F56-3CD1-4887-B6DB-8FD24DA403E7}
