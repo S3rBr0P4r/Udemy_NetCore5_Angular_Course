@@ -10,6 +10,6 @@ namespace Udemy.NetCore5.Angular.Data
 
         }
 
-        public DbSet<AppUser> Users { get; set; }
+        public virtual DbSet<AppUser> Users { get; set; }
     }
 }

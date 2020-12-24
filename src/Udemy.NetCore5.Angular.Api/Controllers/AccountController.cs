@@ -79,7 +79,7 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
 
         private async Task<bool> UserExists(string userName)
         {
-            return await _context.Users.AnyAsync(u => u.UserName == userName.ToLowerInvariant());
+            return await _context.Users.AnyAsync(u => u.UserName == userName.ToLowerInvariant()).ConfigureAwait(false);
         }
     }
 }
