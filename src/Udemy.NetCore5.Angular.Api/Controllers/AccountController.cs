@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,33 +27,35 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserTokenResponse>> Register([FromBody] RegisterUserRequest request)
         {
-            if (await UserExists(request.UserName).ConfigureAwait(false))
+            var user = await GetUser(request.UserName).ConfigureAwait(false);
+
+            if (user != null)
             {
                 return BadRequest("Username is taken");
             }
 
             using var hmac = new HMACSHA512();
-            var user = new AppUser
+            var newUser = new AppUser
             {
                 UserName = request.UserName.ToLowerInvariant(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
                 PasswordSalt = hmac.Key
             };
 
-            await _context.Users.AddAsync(user).ConfigureAwait(false);
+            await _context.Users.AddAsync(newUser).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return new UserTokenResponse
             {
-                UserName = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                UserName = newUser.UserName,
+                Token = _tokenService.CreateToken(newUser)
             };
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<UserTokenResponse>> Login([FromBody] LoginUserRequest request)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.UserName == request.UserName.ToLowerInvariant()).ConfigureAwait(false);
+            var user = await GetUser(request.UserName).ConfigureAwait(false);
 
             if (user == null)
             {
@@ -77,9 +78,9 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             };
         }
 
-        private async Task<bool> UserExists(string userName)
+        private async Task<AppUser> GetUser(string userName)
         {
-            return await _context.Users.AnyAsync(u => u.UserName == userName.ToLowerInvariant()).ConfigureAwait(false);
+            return await _context.Users.SingleOrDefaultAsync(u => u.UserName == userName.ToLowerInvariant()).ConfigureAwait(false);
         }
     }
 }
