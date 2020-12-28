@@ -28,7 +28,7 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
         [Authorize]
         public async Task<AppUser> GetUser(int id)
         {
-            return await _context.Users.FindAsync(id);
+            return await _context.Users.SingleOrDefaultAsync(u => u.Id == id).ConfigureAwait(false);
         }
     }
 }
