@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { error } from 'protractor';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-nav',
@@ -7,13 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
   model: any = {}
+  loggedIn: boolean = false;
 
-  constructor() { }
+  constructor(private accounService: AccountService) { }
 
   ngOnInit(): void {
   }
 
   login() {
-    console.log(this.model);
+    this.accounService.login(this.model).subscribe(response => {
+      console.log(response);
+      this.loggedIn = true;
+    },
+    error => {
+      console.log(error)
+    })
+  }
+
+  logout() {
+    this.loggedIn = false;
   }
 }
