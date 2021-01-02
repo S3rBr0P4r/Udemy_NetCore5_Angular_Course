@@ -12,13 +12,13 @@ import { AccountService } from 'src/app/services/account.service';
 export class NavComponent implements OnInit {
   model: any = {}
 
-  constructor(public accounService: AccountService) { }
+  constructor(public accountService: AccountService) { }
 
   ngOnInit(): void {
   }
 
   login() {
-    this.accounService.login(this.model).subscribe(response => {
+    this.accountService.login(this.model).subscribe(response => {
       console.log(response);
     },
     error => {
@@ -27,6 +27,6 @@ export class NavComponent implements OnInit {
   }
 
   logout() {
-    this.accounService.logout();
+    this.accountService.logout();
   }
 }
