@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Udemy.NetCore5.Angular.Api.Extensions;
+using Udemy.NetCore5.Angular.Api.Middleware;
 
 namespace Udemy.NetCore5.Angular.Api
 {
@@ -35,13 +36,14 @@ namespace Udemy.NetCore5.Angular.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Udemy.NetCore5.Angular.Api v1");
                 });
             }
+
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             app.UseHttpsRedirection();
 
