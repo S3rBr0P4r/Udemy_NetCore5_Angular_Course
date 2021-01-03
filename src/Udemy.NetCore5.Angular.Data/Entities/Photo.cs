@@ -9,7 +9,7 @@ namespace Udemy.NetCore5.Angular.Data.Entities
 
         public string Url { get; set; }
 
-        public bool MainPhoto { get; set; }
+        public bool Enabled { get; set; }
 
         public string PublicId { get; set; }
 

@@ -12,4 +12,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="UserSeedData.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

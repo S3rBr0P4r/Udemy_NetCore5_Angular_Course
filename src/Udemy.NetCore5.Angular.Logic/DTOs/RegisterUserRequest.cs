@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Udemy.NetCore5.Angular.Api.DTOs
+namespace Udemy.NetCore5.Angular.Logic.DTOs
 {
     public class RegisterUserRequest
     {

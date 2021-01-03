@@ -2,33 +2,33 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Udemy.NetCore5.Angular.Data;
-using Udemy.NetCore5.Angular.Data.Entities;
+using Udemy.NetCore5.Angular.Logic.DTOs;
+using Udemy.NetCore5.Angular.Logic.Interfaces;
 
 namespace Udemy.NetCore5.Angular.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly DataContext _context;
-        public UsersController(DataContext context)
+        private readonly IAppUserRepository _repository;
+
+        public UsersController(IAppUserRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<AppUser>> GetUsers()
+        public async Task<IEnumerable<AppUserResponse>> GetUsers()
         {
-            return await _context.Users.ToListAsync().ConfigureAwait(false);
+            return await _repository.GetUsersAsync().ConfigureAwait(false);
         }
 
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<AppUser> GetUser(int id)
+        [HttpGet("{username}")]
+        public async Task<AppUserResponse> GetUser(string userName)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.Id == id).ConfigureAwait(false);
+            return await _repository.GetUserByUserNameAsync(userName).ConfigureAwait(false);
         }
     }
 }

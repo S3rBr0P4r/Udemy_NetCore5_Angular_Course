@@ -4,9 +4,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Udemy.NetCore5.Angular.Api.DTOs;
 using Udemy.NetCore5.Angular.Data;
 using Udemy.NetCore5.Angular.Data.Entities;
+using Udemy.NetCore5.Angular.Logic.DTOs;
 using Udemy.NetCore5.Angular.Logic.Interfaces;
 
 namespace Udemy.NetCore5.Angular.Api.Controllers

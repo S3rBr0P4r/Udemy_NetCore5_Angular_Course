@@ -10,9 +10,9 @@ using Microsoft.EntityFrameworkCore;
 using MockQueryable.Moq;
 using Moq;
 using Udemy.NetCore5.Angular.Api.Controllers;
-using Udemy.NetCore5.Angular.Api.DTOs;
 using Udemy.NetCore5.Angular.Data;
 using Udemy.NetCore5.Angular.Data.Entities;
+using Udemy.NetCore5.Angular.Logic.DTOs;
 using Udemy.NetCore5.Angular.Logic.Interfaces;
 using Xunit;
 
