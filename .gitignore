@@ -349,6 +349,9 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+# Ignore app.settings.json file
+/src/**/appsettings.json
+
 ## Ignore Angular files
 
 # See http://help.github.com/ignore-files/ for more about ignoring files.
