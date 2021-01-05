@@ -13,7 +13,7 @@ namespace Udemy.NetCore5.Angular.Logic.Interfaces
 
         Task<IEnumerable<AppUserResponse>> GetUsersAsync();
 
-        Task<AppUserResponse> GetUserByIdAsync(int id);
+        Task<AppUser> GetUserByIdAsync(int id);
 
         Task<AppUserResponse> GetUserByUserNameAsync(string userName);
     }

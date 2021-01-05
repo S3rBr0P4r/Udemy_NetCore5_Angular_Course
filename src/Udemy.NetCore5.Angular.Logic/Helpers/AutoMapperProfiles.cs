@@ -14,6 +14,7 @@ namespace Udemy.NetCore5.Angular.Logic.Helpers
                 .ForMember(dest => dest.PhotoUrl, opts => opts.MapFrom(src => src.Photos.FirstOrDefault(p => p.Enabled).Url))
                 .ForMember(dest => dest.Age, opts => opts.MapFrom(src => src.DateOfBirth.CalculateAge()));
             CreateMap<Photo, AppUserPhotosResponse>();
+            CreateMap<AppUserEditRequest, AppUser>();
         }
     }
 }

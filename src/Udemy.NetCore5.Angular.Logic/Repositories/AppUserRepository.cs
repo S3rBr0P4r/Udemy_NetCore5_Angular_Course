@@ -40,11 +40,11 @@ namespace Udemy.NetCore5.Angular.Logic.Repositories
                 .ConfigureAwait(false);
         }
 
-        public async Task<AppUserResponse> GetUserByIdAsync(int id)
+        public async Task<AppUser> GetUserByIdAsync(int id)
         {
             return await _context.Users
                 .Where(u => u.Id == id)
-                .ProjectTo<AppUserResponse>(_mapper.ConfigurationProvider)
+                .Include(p => p.Photos)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
         }
 
