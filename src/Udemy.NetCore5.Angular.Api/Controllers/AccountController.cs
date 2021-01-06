@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Udemy.NetCore5.Angular.Data;
@@ -17,11 +18,13 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
     {
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
+        private readonly IMapper _mapper;
 
-        public AccountController(DataContext context, ITokenService tokenService)
+        public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)
         {
             _context = context;
             _tokenService = tokenService;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -34,13 +37,13 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
                 return BadRequest("Username is taken");
             }
 
+            var newUser = _mapper.Map<AppUser>(request);
+
             using var hmac = new HMACSHA512();
-            var newUser = new AppUser
-            {
-                UserName = request.UserName.ToLowerInvariant(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
-                PasswordSalt = hmac.Key
-            };
+
+            newUser.UserName = request.UserName.ToLowerInvariant();
+            newUser.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+            newUser.PasswordSalt = hmac.Key;
 
             await _context.Users.AddAsync(newUser).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -48,7 +51,8 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             return new UserTokenResponse
             {
                 UserName = newUser.UserName,
-                Token = _tokenService.CreateToken(newUser)
+                Token = _tokenService.CreateToken(newUser),
+                KnownAs = newUser.KnownAs
             };
         }
 
@@ -75,7 +79,8 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             {
                 UserName = user.UserName,
                 Token = _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(p => p.Enabled)?.Url
+                PhotoUrl = user.Photos.FirstOrDefault(p => p.Enabled)?.Url,
+                KnownAs = user.KnownAs
             };
         }
 

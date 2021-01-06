@@ -34,9 +34,7 @@ export class MemberPhotoEditorComponent implements OnInit {
 
   setMainPhoto(photo: Photo) {
     this.membersService.setMainPhoto(photo.id).subscribe(() => {
-      this.user.photoUrl = photo.url;
-      this.accountService.setCurrentUser(this.user);
-      this.member.photoUrl = photo.url;
+      this.refreshPhoto(photo);
       this.member.photos.forEach(p => {
         if (p.enabled) {
           p.enabled = false;
@@ -71,11 +69,19 @@ export class MemberPhotoEditorComponent implements OnInit {
 
     this.uploader.onSuccessItem = (item, response, status, header) => {
       if (response) {
-        const photo = JSON.parse(response);
+        const photo: Photo = JSON.parse(response);
         this.member.photos.push(photo);
+        if (photo.enabled) {
+          this.refreshPhoto(photo);
+        }
       }
     }
   }
 
+  refreshPhoto(photo: Photo) {
+    this.user.photoUrl = photo.url;
+    this.accountService.setCurrentUser(this.user);
+    this.member.photoUrl = photo.url;
+  }
 
 }
