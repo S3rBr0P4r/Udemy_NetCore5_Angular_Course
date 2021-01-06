@@ -24,6 +24,7 @@ import { MemberEditComponent } from './components/members/member-edit/member-edi
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
 import { MemberPhotoEditorComponent } from './components/members/member-photo-editor/member-photo-editor.component';
 import { TextInputComponent } from './shared/forms/text-input/text-input.component';
+import { DateInputComponent } from './shared/forms/date-input/date-input.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { TextInputComponent } from './shared/forms/text-input/text-input.compone
     MemberCardComponent,
     MemberEditComponent,
     MemberPhotoEditorComponent,
-    TextInputComponent
+    TextInputComponent,
+    DateInputComponent
   ],
   imports: [
     BrowserModule,
