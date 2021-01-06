@@ -74,13 +74,16 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             return new UserTokenResponse
             {
                 UserName = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(p => p.Enabled)?.Url
             };
         }
 
         private async Task<AppUser> GetUser(string userName)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.UserName == userName.ToLowerInvariant()).ConfigureAwait(false);
+            return await _context.Users
+                .Include(p => p.Photos)
+                .SingleOrDefaultAsync(u => u.UserName == userName.ToLowerInvariant()).ConfigureAwait(false);
         }
     }
 }

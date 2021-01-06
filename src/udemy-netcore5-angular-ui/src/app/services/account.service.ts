@@ -20,8 +20,7 @@ export class AccountService {
       map((response) => {
         const mappedUser = <User>response;
         if (mappedUser) {
-          localStorage.setItem('user', JSON.stringify(mappedUser));
-          this.currentUserSource.next(mappedUser);
+          this.setCurrentUser(mappedUser);
           return 'User ' + mappedUser.userName + ' successfully logged in';
         }
 
@@ -35,8 +34,7 @@ export class AccountService {
       map((user) => {
         const mappedUser = <User>user;
         if (mappedUser) {
-          localStorage.setItem('user', JSON.stringify(mappedUser));
-          this.currentUserSource.next(mappedUser);
+          this.setCurrentUser(mappedUser);
         }
 
         return 'User successfully registered';
@@ -45,6 +43,7 @@ export class AccountService {
   }
 
   setCurrentUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
     this.currentUserSource.next(user);
   }
 
