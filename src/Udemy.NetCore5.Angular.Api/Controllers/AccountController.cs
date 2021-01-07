@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using Udemy.NetCore5.Angular.Data;
 using Udemy.NetCore5.Angular.Data.Entities;
 using Udemy.NetCore5.Angular.Logic.DTOs;
+using Udemy.NetCore5.Angular.Logic.Helpers;
 using Udemy.NetCore5.Angular.Logic.Interfaces;
 
 namespace Udemy.NetCore5.Angular.Api.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [ApiController]
     [Route("[controller]")]
     public class AccountController : ControllerBase

@@ -38,15 +38,22 @@ namespace Udemy.NetCore5.Angular.Logic.Repositories
         {
             var query = _context.Users
                 .AsQueryable()
-                .Where(u => 
+                .Where(u =>
                     u.UserName != userParams.CurrentUserName &&
                     u.Gender == userParams.Gender &&
-                    u.DateOfBirth >= DateTime.Today.AddYears(-userParams.MaxAge -1) &&
-                    u.DateOfBirth <= DateTime.Today.AddYears(-userParams.MinAge))
-                .ProjectTo<AppUserResponse>(_mapper.ConfigurationProvider)
-                .AsNoTracking();
+                    u.DateOfBirth >= DateTime.Today.AddYears(-userParams.MaxAge - 1) &&
+                    u.DateOfBirth <= DateTime.Today.AddYears(-userParams.MinAge));
 
-            return await PagedList<AppUserResponse>.CreateAsync(query, userParams.PageNumber, userParams.PageSize).ConfigureAwait(false);
+            query = userParams.OrderBy switch
+            {
+                "created" => query.OrderByDescending(u => u.UserCreated),
+                _ => query.OrderByDescending(u => u.LastActive)
+            };
+
+            return await PagedList<AppUserResponse>.CreateAsync(
+                query.ProjectTo<AppUserResponse>(_mapper.ConfigurationProvider).AsNoTracking(),
+                userParams.PageNumber, userParams.PageSize)
+                .ConfigureAwait(false);
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)

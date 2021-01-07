@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Udemy.NetCore5.Angular.Data;
-using Udemy.NetCore5.Angular.Data.Entities;
+using Udemy.NetCore5.Angular.Logic.Helpers;
 
 namespace Udemy.NetCore5.Angular.Api.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [ApiController]
     [Route("[controller]")]
     public class BuggyController : ControllerBase
