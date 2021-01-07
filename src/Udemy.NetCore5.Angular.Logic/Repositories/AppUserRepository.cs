@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Udemy.NetCore5.Angular.Data;
 using Udemy.NetCore5.Angular.Data.Entities;
 using Udemy.NetCore5.Angular.Logic.DTOs;
+using Udemy.NetCore5.Angular.Logic.Helpers;
 using Udemy.NetCore5.Angular.Logic.Interfaces;
 
 namespace Udemy.NetCore5.Angular.Logic.Repositories
@@ -32,12 +33,11 @@ namespace Udemy.NetCore5.Angular.Logic.Repositories
             return await _context.SaveChangesAsync().ConfigureAwait(false) > 0;
         }
 
-        public async Task<IEnumerable<AppUserResponse>> GetUsersAsync()
+        public async Task<PagedList<AppUserResponse>> GetUsersAsync(UserParams userParams)
         {
-            return await _context.Users
-                .ProjectTo<AppUserResponse>(_mapper.ConfigurationProvider)
-                .ToListAsync()
-                .ConfigureAwait(false);
+            var query = _context.Users.ProjectTo<AppUserResponse>(_mapper.ConfigurationProvider).AsNoTracking();
+            
+            return await PagedList<AppUserResponse>.CreateAsync(query, userParams.PageNumber, userParams.PageSize).ConfigureAwait(false);
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Udemy.NetCore5.Angular.Data.Entities;
 using Udemy.NetCore5.Angular.Logic.DTOs;
 using Udemy.NetCore5.Angular.Logic.Extensions;
+using Udemy.NetCore5.Angular.Logic.Helpers;
 using Udemy.NetCore5.Angular.Logic.Interfaces;
 
 namespace Udemy.NetCore5.Angular.Api.Controllers
@@ -31,9 +32,13 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<AppUserResponse>> GetUsers()
+        public async Task<ActionResult<IEnumerable<AppUserResponse>>> GetUsers([FromQuery] UserParams userParams)
         {
-            return await _repository.GetUsersAsync().ConfigureAwait(false);
+            var users = await _repository.GetUsersAsync(userParams).ConfigureAwait(false);
+
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+
+            return Ok(users);
         }
 
         [HttpGet("{username}", Name = "GetUser")]

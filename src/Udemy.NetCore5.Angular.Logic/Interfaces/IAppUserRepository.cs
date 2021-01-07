@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Udemy.NetCore5.Angular.Data.Entities;
 using Udemy.NetCore5.Angular.Logic.DTOs;
+using Udemy.NetCore5.Angular.Logic.Helpers;
 
 namespace Udemy.NetCore5.Angular.Logic.Interfaces
 {
@@ -11,7 +11,7 @@ namespace Udemy.NetCore5.Angular.Logic.Interfaces
 
         Task<bool> SaveAllChangesAsync();
 
-        Task<IEnumerable<AppUserResponse>> GetUsersAsync();
+        Task<PagedList<AppUserResponse>> GetUsersAsync(UserParams userParams);
 
         Task<AppUser> GetUserByIdAsync(int id);
 
