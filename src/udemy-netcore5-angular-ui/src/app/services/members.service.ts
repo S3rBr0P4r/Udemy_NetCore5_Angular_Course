@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Member } from '../models/member';
 import { PaginatedResult } from '../models/pagination';
+import { UserParams } from '../models/userParams';
 
 @Injectable({
   providedIn: 'root'
@@ -12,35 +13,22 @@ import { PaginatedResult } from '../models/pagination';
 export class MembersService {
   baseUrl = environment.apiUrl;
   members: Member[] = [];
-  paginatedResults: PaginatedResult<Member[]> = new PaginatedResult<Member[]>();
+
 
   constructor(private httpClient: HttpClient) { }
 
-  getMembers(page?: number, itemsPerPage?: number) {
-    let params = new HttpParams();
+  getMembers(userParams: UserParams) {
+    let params = this.getPaginationHeaders(userParams.pageNumber, userParams.pageSize);
 
-    if (page !== null && itemsPerPage !== null) {
-      params = params
-      .append('pageNumber', page.toString())
-      .append('pageSize', itemsPerPage.toString());
-    }
+    params = params
+      .append('minAge', userParams.minAge.toString())
+      .append('maxAge', userParams.maxAge.toString())
+      .append('gender', userParams.gender);
 
     // if (this.members.length > 0) {
     //   return of(this.members);
     // }
-    return this.httpClient.get<Member[]>(this.baseUrl + 'users', { observe: 'response', params }).pipe(
-      map(response => {
-        this.paginatedResults.result = response.body;
-        if (response.headers.get('Pagination') !== null) {
-          this.paginatedResults.pagination = JSON.parse(response.headers.get('Pagination'));
-        }
-        return this.paginatedResults;
-      })
-      // map(members => {
-      //   this.members = members;
-      //   return members;
-      // })
-    );
+    return this.getPaginatedResults<Member[]>(this.baseUrl + 'users', params);
   }
 
   getMember(userName: string) {
@@ -66,5 +54,28 @@ export class MembersService {
 
   deletePhoto(photoId: number) {
     return this.httpClient.delete(this.baseUrl + 'users/delete-photo/' + photoId);
+  }
+
+  private getPaginatedResults<T>(url, params) {
+    const paginatedResults: PaginatedResult<T> = new PaginatedResult<T>();
+    return this.httpClient.get<T>(url, { observe: 'response', params }).pipe(
+      map(response => {
+        paginatedResults.result = response.body;
+        if (response.headers.get('Pagination') !== null) {
+          paginatedResults.pagination = JSON.parse(response.headers.get('Pagination'));
+        }
+        return paginatedResults;
+      })
+    );
+  }
+
+  private getPaginationHeaders(pageNumber: number, pageSize: number) {
+    let params = new HttpParams();
+
+    params = params
+      .append('pageNumber', pageNumber.toString())
+      .append('pageSize', pageSize.toString());
+
+    return params;
   }
 }

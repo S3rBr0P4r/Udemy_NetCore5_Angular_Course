@@ -34,6 +34,14 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AppUserResponse>>> GetUsers([FromQuery] UserParams userParams)
         {
+            var user = await GetUser().ConfigureAwait(false);
+            userParams.CurrentUserName = user.UserName;
+
+            if (string.IsNullOrEmpty(userParams.Gender))
+            {
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+            }
+
             var users = await _repository.GetUsersAsync(userParams).ConfigureAwait(false);
 
             Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);

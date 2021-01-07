@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -35,8 +36,16 @@ namespace Udemy.NetCore5.Angular.Logic.Repositories
 
         public async Task<PagedList<AppUserResponse>> GetUsersAsync(UserParams userParams)
         {
-            var query = _context.Users.ProjectTo<AppUserResponse>(_mapper.ConfigurationProvider).AsNoTracking();
-            
+            var query = _context.Users
+                .AsQueryable()
+                .Where(u => 
+                    u.UserName != userParams.CurrentUserName &&
+                    u.Gender == userParams.Gender &&
+                    u.DateOfBirth >= DateTime.Today.AddYears(-userParams.MaxAge -1) &&
+                    u.DateOfBirth <= DateTime.Today.AddYears(-userParams.MinAge))
+                .ProjectTo<AppUserResponse>(_mapper.ConfigurationProvider)
+                .AsNoTracking();
+
             return await PagedList<AppUserResponse>.CreateAsync(query, userParams.PageNumber, userParams.PageSize).ConfigureAwait(false);
         }
 

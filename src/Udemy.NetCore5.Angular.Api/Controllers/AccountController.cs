@@ -52,7 +52,8 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             {
                 UserName = newUser.UserName,
                 Token = _tokenService.CreateToken(newUser),
-                KnownAs = newUser.KnownAs
+                KnownAs = newUser.KnownAs,
+                Gender = newUser.Gender
             };
         }
 
@@ -80,7 +81,8 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
                 UserName = user.UserName,
                 Token = _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(p => p.Enabled)?.Url,
-                KnownAs = user.KnownAs
+                KnownAs = user.KnownAs,
+                Gender = user.Gender
             };
         }
 
