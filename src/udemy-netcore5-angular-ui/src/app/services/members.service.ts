@@ -23,7 +23,8 @@ export class MembersService {
     params = params
       .append('minAge', userParams.minAge.toString())
       .append('maxAge', userParams.maxAge.toString())
-      .append('gender', userParams.gender);
+      .append('gender', userParams.gender)
+      .append('orderBy', userParams.orderBy);
 
     // if (this.members.length > 0) {
     //   return of(this.members);
