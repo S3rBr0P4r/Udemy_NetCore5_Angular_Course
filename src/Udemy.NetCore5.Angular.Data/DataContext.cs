@@ -20,7 +20,11 @@ namespace Udemy.NetCore5.Angular.Data
         {
             base.OnModelCreating(modelBuilder);
             SetupUserLikeRelationship(modelBuilder);
+            SetupUserMessagesRelationship(modelBuilder);
+        }
 
+        private static void SetupUserMessagesRelationship(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Message>()
                 .HasOne(u => u.Recipient)
                 .WithMany(m => m.MessagesReceived)
