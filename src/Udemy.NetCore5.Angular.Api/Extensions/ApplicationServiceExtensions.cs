@@ -20,6 +20,7 @@ namespace Udemy.NetCore5.Angular.Api.Extensions
             services.AddScoped<LogUserActivity>();
             services.AddScoped<IAppUserRepository, AppUserRepository>();
             services.AddScoped<ILikesRepository, LikesRepository>();
+            services.AddScoped<IMessagesRepository, MessagesRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {

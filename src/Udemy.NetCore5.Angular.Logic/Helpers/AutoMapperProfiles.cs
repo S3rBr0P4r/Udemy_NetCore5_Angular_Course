@@ -16,6 +16,9 @@ namespace Udemy.NetCore5.Angular.Logic.Helpers
             CreateMap<Photo, AppUserPhotosResponse>();
             CreateMap<AppUserEditRequest, AppUser>();
             CreateMap<RegisterUserRequest, AppUser>();
+            CreateMap<Message, AppUserMessagesResponse>()
+                .ForMember(dest => dest.SenderPhotoUrl, opts => opts.MapFrom(src => src.Sender.Photos.FirstOrDefault(p => p.Enabled).Url))
+                .ForMember(dest => dest.RecipientPhotoUrl, opts => opts.MapFrom(src => src.Recipient.Photos.FirstOrDefault(p => p.Enabled).Url));
         }
     }
 }
