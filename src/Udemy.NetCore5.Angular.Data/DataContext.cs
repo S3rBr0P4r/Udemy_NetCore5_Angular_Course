@@ -14,12 +14,28 @@ namespace Udemy.NetCore5.Angular.Data
 
         public DbSet<AppUserLike> Likes { get; set; }
 
+        public DbSet<Message> Messages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            SetupUserLikeRelationship(modelBuilder);
 
+            modelBuilder.Entity<Message>()
+                .HasOne(u => u.Recipient)
+                .WithMany(m => m.MessagesReceived)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(u => u.Sender)
+                .WithMany(m => m.MessagesSent)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+
+        private static void SetupUserLikeRelationship(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<AppUserLike>()
-                .HasKey(k => new { k.SourceUserId, k.LikedUserId });
+                .HasKey(k => new {k.SourceUserId, k.LikedUserId});
 
             modelBuilder.Entity<AppUserLike>()
                 .HasOne(s => s.SourceUser)
