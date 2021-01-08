@@ -31,6 +31,10 @@ namespace Udemy.NetCore5.Angular.Data.Entities
 
         public ICollection<Photo> Photos { get; set; }
 
+        public ICollection<AppUserLike> LikedByUsers { get; set; }
+
+        public ICollection<AppUserLike> LikedUsers { get; set; }
+
         public byte[] PasswordHash { get; set; }
 
         public byte[] PasswordSalt { get; set; }
