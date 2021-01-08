@@ -67,9 +67,14 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUserLikesResponse>>> GetUserLikes(string predicate)
+        public async Task<ActionResult<IEnumerable<AppUserLikesResponse>>> GetUserLikes([FromQuery] LikesParams likesParams)
         {
-            return Ok(await _likesRepository.GetUserLikes(predicate, User.GetUserId()).ConfigureAwait(false));
+            likesParams.UserId = User.GetUserId();
+            var users = await _likesRepository.GetUserLikes(likesParams).ConfigureAwait(false);
+
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
+
+            return Ok(users);
         }
     }
 }

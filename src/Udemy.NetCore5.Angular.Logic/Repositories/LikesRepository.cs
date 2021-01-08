@@ -6,6 +6,7 @@ using Udemy.NetCore5.Angular.Data;
 using Udemy.NetCore5.Angular.Data.Entities;
 using Udemy.NetCore5.Angular.Logic.DTOs;
 using Udemy.NetCore5.Angular.Logic.Extensions;
+using Udemy.NetCore5.Angular.Logic.Helpers;
 using Udemy.NetCore5.Angular.Logic.Interfaces;
 
 namespace Udemy.NetCore5.Angular.Logic.Repositories
@@ -32,24 +33,28 @@ namespace Udemy.NetCore5.Angular.Logic.Repositories
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<AppUserLikesResponse>> GetUserLikes(string predicate, int userId)
+        public async Task<PagedList<AppUserLikesResponse>> GetUserLikes(LikesParams likesParams)
         {
             var users = _context.Users.OrderBy(u => u.UserName).AsQueryable();
             var likes = _context.Likes.AsQueryable();
 
-            if (predicate == "liked")
+            switch (likesParams.Predicate)
             {
-                likes = likes.Where(l => l.SourceUserId == userId);
-                users = likes.Select(l => l.LikedUser);
+                case "liked":
+                {
+                    likes = likes.Where(l => l.SourceUserId == likesParams.UserId);
+                    users = likes.Select(l => l.LikedUser);
+                }
+                    break;
+                case "likedBy":
+                {
+                    likes = likes.Where(l => l.LikedUserId == likesParams.UserId);
+                    users = likes.Select(l => l.SourceUser);
+                }
+                    break;
             }
 
-            if (predicate == "likedBy")
-            {
-                likes = likes.Where(l => l.LikedUserId == userId);
-                users = likes.Select(l => l.SourceUser);
-            }
-
-            return await users.Select(u => new AppUserLikesResponse
+            var likedUsers = users.Select(u => new AppUserLikesResponse
             {
                 UserName = u.UserName,
                 KnownAs = u.KnownAs,
@@ -57,7 +62,9 @@ namespace Udemy.NetCore5.Angular.Logic.Repositories
                 PhotoUrl = u.Photos.FirstOrDefault(p => p.Enabled).Url,
                 City = u.City,
                 Id = u.Id
-            }).ToListAsync().ConfigureAwait(false);
+            });
+
+            return await PagedList<AppUserLikesResponse>.CreateAsync(likedUsers, likesParams.PageNumber, likesParams.PageSize);
         }
     }
 }

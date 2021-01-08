@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Udemy.NetCore5.Angular.Data.Entities;
 using Udemy.NetCore5.Angular.Logic.DTOs;
+using Udemy.NetCore5.Angular.Logic.Helpers;
 
 namespace Udemy.NetCore5.Angular.Logic.Interfaces
 {
@@ -11,6 +11,6 @@ namespace Udemy.NetCore5.Angular.Logic.Interfaces
 
         Task<AppUser> GetUserWithLikes(int userId);
 
-        Task<IEnumerable<AppUserLikesResponse>> GetUserLikes(string predicate, int userId);
+        Task<PagedList<AppUserLikesResponse>> GetUserLikes(LikesParams likesParams);
     }
 }
