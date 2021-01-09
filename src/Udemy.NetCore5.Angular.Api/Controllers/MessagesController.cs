@@ -85,6 +85,40 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             return Ok(await _messagesRepository.GetMessageThread(currentUserName, userName).ConfigureAwait(false));
         }
 
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMessage(int id)
+        {
+            var userName = User.GetUserName();
+            var message = await _messagesRepository.GetMessage(id);
+
+            if (message.Sender.UserName != userName && message.Recipient.UserName != userName)
+            {
+                return Unauthorized();
+            }
+
+            if (message.Sender.UserName == userName)
+            {
+                message.SenderDeleted = true;
+            }
+
+            if (message.Recipient.UserName == userName)
+            {
+                message.RecipientDeleted = true;
+            }
+
+            if (message.SenderDeleted && message.RecipientDeleted)
+            {
+                _messagesRepository.DeleteMessage(message);
+            }
+
+            if (await _messagesRepository.SaveAllAsync().ConfigureAwait(false))
+            {
+                return Ok();
+            }
+
+            return BadRequest("Problem deleting the message");
+        }
+
         private async Task<AppUser> GetUser(string userName)
         {
             var userResponse = await _userRepository.GetUserByUserNameAsync(userName).ConfigureAwait(false);
