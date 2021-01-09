@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -74,6 +75,14 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages);
 
             return messages;
+        }
+
+        [HttpGet("thread/{userName}")]
+        public async Task<ActionResult<IEnumerable<AppUserMessagesResponse>>> GetMessagesThread(string userName)
+        {
+            var currentUserName = User.GetUserName();
+
+            return Ok(await _messagesRepository.GetMessageThread(currentUserName, userName).ConfigureAwait(false));
         }
 
         private async Task<AppUser> GetUser(string userName)

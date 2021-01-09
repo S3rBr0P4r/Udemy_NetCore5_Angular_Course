@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using Udemy.NetCore5.Angular.Data;
 using Udemy.NetCore5.Angular.Data.Entities;
 using Udemy.NetCore5.Angular.Logic.DTOs;
@@ -54,9 +56,33 @@ namespace Udemy.NetCore5.Angular.Logic.Repositories
                 .ConfigureAwait(false);
         }
 
-        public Task<IEnumerable<AppUserMessagesResponse>> GetMessageThread(int currentUserId, int recipientId)
+        public async Task<IEnumerable<AppUserMessagesResponse>> GetMessageThread(string currentUserName, string recipientUserName)
         {
-            throw new System.NotImplementedException();
+            var messages = await _context.Messages
+                .Include(u => u.Sender).ThenInclude(p => p.Photos)
+                .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+                .Where(
+                    m => m.Recipient.UserName == currentUserName 
+                         && m.Sender.UserName == recipientUserName 
+                         || m.Recipient.UserName == recipientUserName 
+                         && m.Sender.UserName == currentUserName)
+                .OrderBy(m => m.MessageSent)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            var unreadMessages = messages.Where(m => m.DateRead == null && m.Recipient.UserName == currentUserName).ToList();
+
+            if (unreadMessages.Any())
+            {
+                foreach (var unreadMessage in unreadMessages)
+                {
+                    unreadMessage.DateRead = DateTime.UtcNow;
+                }
+
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+            }
+
+            return _mapper.Map<IEnumerable<AppUserMessagesResponse>>(messages);
         }
 
         public async Task<bool> SaveAllAsync()

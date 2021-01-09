@@ -14,7 +14,7 @@ namespace Udemy.NetCore5.Angular.Logic.Interfaces
         Task<Message> GetMessage(int id);
         Task<PagedList<AppUserMessagesResponse>> GetMessagesForUser(MessageParams messageParams);
 
-        Task<IEnumerable<AppUserMessagesResponse>> GetMessageThread(int currentUserId, int recipientId);
+        Task<IEnumerable<AppUserMessagesResponse>> GetMessageThread(string currentUserName, string recipientUserName);
 
         Task<bool> SaveAllAsync();
     }
