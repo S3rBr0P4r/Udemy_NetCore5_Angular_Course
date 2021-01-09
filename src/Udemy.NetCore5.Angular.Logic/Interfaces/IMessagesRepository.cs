@@ -12,7 +12,7 @@ namespace Udemy.NetCore5.Angular.Logic.Interfaces
         void DeleteMessage(Message message);
 
         Task<Message> GetMessage(int id);
-        Task<PagedList<AppUserMessagesResponse>> GetMessagesForUser();
+        Task<PagedList<AppUserMessagesResponse>> GetMessagesForUser(MessageParams messageParams);
 
         Task<IEnumerable<AppUserMessagesResponse>> GetMessageThread(int currentUserId, int recipientId);
 

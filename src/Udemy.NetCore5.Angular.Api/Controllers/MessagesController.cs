@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,17 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             }
 
             return BadRequest("Failed to send message");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AppUserMessagesResponse>>> GetMessagesForUser([FromQuery] MessageParams messageParams)
+        {
+            messageParams.UserName = User.GetUserName();
+            var messages = await _messagesRepository.GetMessagesForUser(messageParams).ConfigureAwait(false);
+
+            Response.AddPaginationHeader(messages.CurrentPage, messages.PageSize, messages.TotalCount, messages.TotalPages);
+
+            return messages;
         }
 
         private async Task<AppUser> GetUser(string userName)
