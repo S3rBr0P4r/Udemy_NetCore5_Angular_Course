@@ -36,7 +36,10 @@ namespace Udemy.NetCore5.Angular.Logic.Repositories
 
         public async Task<Message> GetMessage(int id)
         {
-            return await _context.Messages.FindAsync(id).ConfigureAwait(false);
+            return await _context.Messages
+                .Include(u => u.Sender)
+                .Include(u => u.Recipient)
+                .SingleOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
         }
 
         public async Task<PagedList<AppUserMessagesResponse>> GetMessagesForUser(MessageParams messageParams)
