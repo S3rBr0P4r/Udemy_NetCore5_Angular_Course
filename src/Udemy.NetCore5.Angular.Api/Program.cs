@@ -20,7 +20,7 @@ namespace Udemy.NetCore5.Angular.Api
             {
                 var context = services.GetRequiredService<DataContext>();
                 await context.Database.MigrateAsync();
-                await Seed.SeedUsers(context);
+                // await Seed.SeedUsers(context);
             }
             catch (Exception ex)
             {

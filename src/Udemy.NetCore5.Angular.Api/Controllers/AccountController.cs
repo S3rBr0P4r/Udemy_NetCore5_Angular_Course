@@ -41,12 +41,8 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
 
             var newUser = _mapper.Map<AppUser>(request);
 
-            using var hmac = new HMACSHA512();
-
             newUser.UserName = request.UserName.ToLowerInvariant();
-            newUser.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
-            newUser.PasswordSalt = hmac.Key;
-
+            
             await _context.Users.AddAsync(newUser).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
@@ -68,16 +64,7 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             {
                 return Unauthorized("Invalid username");
             }
-
-            using var hmac = new HMACSHA512(user.PasswordSalt);
-
-            var requestPasswordHashed = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
-
-            if (requestPasswordHashed.Where((t, i) => t != user.PasswordHash[i]).Any())
-            {
-                return Unauthorized("Invalid password");
-            }
-
+            
             return new UserTokenResponse
             {
                 UserName = user.UserName,
