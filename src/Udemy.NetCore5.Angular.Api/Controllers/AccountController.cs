@@ -1,11 +1,9 @@
 ﻿using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Udemy.NetCore5.Angular.Data;
 using Udemy.NetCore5.Angular.Data.Entities;
 using Udemy.NetCore5.Angular.Logic.DTOs;
 using Udemy.NetCore5.Angular.Logic.Helpers;
@@ -18,13 +16,15 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public AccountController(DataContext context, ITokenService tokenService, IMapper mapper)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ITokenService tokenService, IMapper mapper)
         {
-            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _tokenService = tokenService;
             _mapper = mapper;
         }
@@ -42,9 +42,13 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             var newUser = _mapper.Map<AppUser>(request);
 
             newUser.UserName = request.UserName.ToLowerInvariant();
-            
-            await _context.Users.AddAsync(newUser).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+
+            var result = await _userManager.CreateAsync(newUser, request.Password);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
 
             return new UserTokenResponse
             {
@@ -64,6 +68,13 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
             {
                 return Unauthorized("Invalid username");
             }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false).ConfigureAwait(false);
+
+            if (!result.Succeeded)
+            {
+                return Unauthorized();
+            }
             
             return new UserTokenResponse
             {
@@ -77,7 +88,7 @@ namespace Udemy.NetCore5.Angular.Api.Controllers
 
         private async Task<AppUser> GetUser(string userName)
         {
-            return await _context.Users
+            return await _userManager.Users
                 .Include(p => p.Photos)
                 .SingleOrDefaultAsync(u => u.UserName == userName.ToLowerInvariant()).ConfigureAwait(false);
         }
