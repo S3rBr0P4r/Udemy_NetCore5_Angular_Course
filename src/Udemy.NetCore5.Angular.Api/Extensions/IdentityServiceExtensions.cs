@@ -16,6 +16,9 @@ namespace Udemy.NetCore5.Angular.Api.Extensions
             services.AddIdentityCore<AppUser>(opts =>
                 {
                     opts.Password.RequireNonAlphanumeric = false;
+                    opts.Password.RequireLowercase = false;
+                    opts.Password.RequireUppercase = false;
+                    opts.Password.RequiredUniqueChars = 0;
                 })
                 .AddRoles<AppRole>()
                 .AddRoleManager<RoleManager<AppRole>>()

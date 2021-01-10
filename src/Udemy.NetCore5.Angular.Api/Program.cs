@@ -1,11 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Udemy.NetCore5.Angular.Data;
+using Udemy.NetCore5.Angular.Data.Entities;
 
 namespace Udemy.NetCore5.Angular.Api
 {
@@ -19,8 +21,9 @@ namespace Udemy.NetCore5.Angular.Api
             try
             {
                 var context = services.GetRequiredService<DataContext>();
-                await context.Database.MigrateAsync();
-                // await Seed.SeedUsers(context);
+                var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                await context.Database.MigrateAsync().ConfigureAwait(false);
+                await Seed.SeedUsers(userManager).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
