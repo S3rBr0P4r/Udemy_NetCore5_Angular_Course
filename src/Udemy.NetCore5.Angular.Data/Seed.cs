@@ -11,7 +11,7 @@ namespace Udemy.NetCore5.Angular.Data
 {
     public class Seed
     {
-        public static async Task SeedUsers(UserManager<AppUser> userManager)
+        public static async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             if (await userManager.Users.AnyAsync().ConfigureAwait(false))
             {
@@ -25,12 +25,33 @@ namespace Udemy.NetCore5.Angular.Data
                 return;
             }
 
+            var roles = new List<AppRole>
+            {
+                new AppRole {Name = "Member"},
+                new AppRole {Name = "Admin"},
+                new AppRole {Name = "Moderator"}
+            };
+
+            foreach (var role in roles)
+            {
+                await roleManager.CreateAsync(role).ConfigureAwait(false);
+            }
+
             foreach (var user in users)
             {
                 user.UserName = user.UserName.ToLowerInvariant();
 
                 await userManager.CreateAsync(user, "123456").ConfigureAwait(false);
+                await userManager.AddToRoleAsync(user, "Member").ConfigureAwait(false);
             }
+
+            var admin = new AppUser
+            {
+                UserName = "admin"
+            };
+
+            await userManager.CreateAsync(admin, "123456").ConfigureAwait(false);
+            await userManager.AddToRolesAsync(admin, new[] {"Admin", "Moderator"});
         }
     }
 }

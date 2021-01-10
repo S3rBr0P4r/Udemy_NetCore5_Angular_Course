@@ -22,8 +22,9 @@ namespace Udemy.NetCore5.Angular.Api
             {
                 var context = services.GetRequiredService<DataContext>();
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
                 await context.Database.MigrateAsync().ConfigureAwait(false);
-                await Seed.SeedUsers(userManager).ConfigureAwait(false);
+                await Seed.SeedUsers(userManager, roleManager).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
